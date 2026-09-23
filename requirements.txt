@@ -1,0 +1,10 @@
+# NYC Taxi real-time streaming pipeline — pinned dependencies
+# Python 3.9+  |  Java 17 (for PySpark + Kafka)  |  Apache Kafka 3.x/4.x  |  PostgreSQL 13+
+pyspark==3.5.3
+kafka-python==2.0.2
+psycopg2-binary==2.9.12
+pandas==2.3.3
+pyarrow==20.0.0
+# notebook execution (data_profiling_report.ipynb)
+jupyter==1.1.1
+matplotlib==3.9.2

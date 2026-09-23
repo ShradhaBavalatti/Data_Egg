@@ -1,0 +1,23 @@
+source_column,source_type,silver_column,silver_type,transformation_rule,nullable_status,gold_usage
+trip_id,BIGINT,trip_id,BIGINT,Surrogate incremental cursor; no transformation,required,Fact/gold downstream
+trip_key,TEXT,trip_key,STRING,Deterministic MD5 business key,required,Fact/gold downstream
+vendor_id,INTEGER,VendorID,INTEGER,Rename to canonical event contract,nullable,Fact/gold downstream
+tpep_pickup_datetime,TIMESTAMP,tpep_pickup_datetime,TIMESTAMP,Event time; watermark and partition anchor,required,Fact/gold downstream
+tpep_dropoff_datetime,TIMESTAMP,tpep_dropoff_datetime,TIMESTAMP,Used for duration validation,nullable,Fact/gold downstream
+passenger_count,INTEGER,passenger_count,INTEGER,COALESCE null to 1,nullable,Fact/gold downstream
+trip_distance,DOUBLE PRECISION,trip_distance,DOUBLE,Validate 0–200 miles,nullable,Fact/gold downstream
+ratecode_id,INTEGER,RatecodeID,INTEGER,COALESCE null to 99,nullable,Silver retained
+store_and_fwd_flag,TEXT,store_and_fwd_flag,STRING,COALESCE null to N,nullable,Silver retained
+pu_location_id,INTEGER,PULocationID,INTEGER,Validate 1–265; join zones.location_id,required,Fact/gold downstream
+do_location_id,INTEGER,DOLocationID,INTEGER,Validate 1–265; join zones.location_id,required,Fact/gold downstream
+payment_type,INTEGER,payment_type,INTEGER,Payment code; Gold label mapping,nullable,Fact/gold downstream
+fare_amount,DOUBLE PRECISION,fare_amount,DOUBLE,Reject negative,nullable,Fact/gold downstream
+extra,DOUBLE PRECISION,extra,DOUBLE,Pass through,nullable,Silver retained
+mta_tax,DOUBLE PRECISION,mta_tax,DOUBLE,Pass through,nullable,Silver retained
+tip_amount,DOUBLE PRECISION,tip_amount,DOUBLE,Pass through,nullable,Fact/gold downstream
+tolls_amount,DOUBLE PRECISION,tolls_amount,DOUBLE,Pass through,nullable,Silver retained
+improvement_surcharge,DOUBLE PRECISION,improvement_surcharge,DOUBLE,Pass through,nullable,Silver retained
+total_amount,DOUBLE PRECISION,total_amount,DOUBLE,Reject negative,nullable,Fact/gold downstream
+congestion_surcharge,DOUBLE PRECISION,congestion_surcharge,DOUBLE,COALESCE null to 0,nullable,Silver retained
+airport_fee,DOUBLE PRECISION,airport_fee,DOUBLE,COALESCE null to 0,nullable,Silver retained
+last_updated,TIMESTAMP,last_updated,TIMESTAMP,Operational update timestamp,nullable,Silver retained
